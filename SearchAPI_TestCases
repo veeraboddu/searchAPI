@@ -1,0 +1,124 @@
+//Author Veera Boddu
+package APITesting.com.org.api;
+
+import static com.jayway.restassured.RestAssured.given;
+import static com.jayway.restassured.RestAssured.when;
+
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import com.jayway.restassured.response.Response;
+
+public class iTunesAPI {
+
+	public void iTunesAPIs() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	// 1. check weather given url response is 200 or not.
+	@Test
+	public void Test_01() {
+
+			Response res = when().get(
+					"https://itunes.apple.com/search?");
+			// get("api.openweathermap.org/data/2.5/weather?q=London");
+			System.out.println(res.getStatusCode());
+			Assert.assertEquals(res.getStatusCode(), 200);
+		}
+	
+	//2.  pass first parameter with values and check the validation for given parameter
+	@Test
+	public void Test_02(){
+		String firstParamerKey="term",value="";
+		//StringBuilder str = new StringBuilder();
+		
+		// passing values as hardcorded
+		value = "jack johnson";
+		// 	required yes
+		
+	 	//Note: URL encoding replaces spaces with the plus (+) character and all characters except the following are encoded: letters, numbers, periods (.), dashes (-), underscores (_), and asterisks (*).
+		if (value!=null && !value.equals("")){
+			value = value.replaceAll(" ", "+");
+		}
+		
+		Response res =(Response)
+		given().
+		param(firstParamerKey, value).
+		when().get(
+				"https://itunes.apple.com/search?");
+		//then().
+		//assertThat().statusCode(200);
+		
+		System.out.println(res.asString());
+		Assert.assertEquals(res.statusCode(), 200);
+	}
+	
+	//3.  pass 2nd and 3rd parameter county
+	@Test
+	public void Test_03(){
+		String firstParamerKey="term",value="",country="us",media="all";
+		// passing values as hardcorded
+		value = "jack johnson";
+		// 	required yes
+		
+	 	//Note: URL encoding replaces spaces with the plus (+) character and all characters except the following are encoded: letters, numbers, periods (.), dashes (-), underscores (_), and asterisks (*).
+		if (value!=null && !value.equals("")){
+			value = value.replaceAll(" ", "+");
+		}
+		
+		Response res =(Response)
+		given().
+		param(firstParamerKey, value).
+		param(country, "uk").  // hardcoded uk default values is us
+		param(media, "movie").  // hardcoded media default values is all
+		when().get(
+				"https://itunes.apple.com/search?");
+		//then().
+		//assertThat().statusCode(200);
+		
+		System.out.println(res.asString());
+		Assert.assertEquals(res.statusCode(), 200);
+		
+	}
+	
+	
+	//4.  Search result values exceeds or not
+	@Test
+	public void Test_04(){
+		String firstParamerKey="term",value="",country="us",media="all";
+		int resultCount =50;
+		// passing values as hardcorded
+		value = "jack johnson";
+		// 	required yes
+		
+	 	//Note: URL encoding replaces spaces with the plus (+) character and all characters except the following are encoded: letters, numbers, periods (.), dashes (-), underscores (_), and asterisks (*).
+		if (value!=null && !value.equals("")){
+			value = value.replaceAll(" ", "+");
+		}
+		
+		Response res =(Response)
+		given().
+		param(firstParamerKey, value).
+		param(country, "uk").  // hardcoded uk default values is us
+		param(media, "movie").  // hardcoded media default values is all
+		when().get(
+				"https://itunes.apple.com/search?");
+		//then().
+		//assertThat().statusCode(200);
+		
+		System.out.println(res.asString());
+		
+		String respvalue = res.asString();
+		// convert response value into JSON
+		// { "resultCount":0, "results": []
+		// get resultCount 
+		
+		Assert.assertEquals(res.statusCode(), 200);
+		if(resultCount>200){
+			System.out.println("iTunes search result exceds");
+		}
+	}
+
+
+
+}
